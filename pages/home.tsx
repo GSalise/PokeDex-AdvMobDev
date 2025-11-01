@@ -6,9 +6,12 @@ import {
   FlatList,
   Image,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { usePokeDexApi } from '../hook/usePokeDexApi';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 function getPokemonImageUrl(url: string) {
   // Extract the Pokémon ID from the URL
@@ -18,6 +21,7 @@ function getPokemonImageUrl(url: string) {
 }
 
 function Home() {
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
   const [offset, setOffset] = useState(0);
   const { data, isLoading, error, isRefetching, refetch } = usePokeDexApi(
     20,
@@ -58,7 +62,20 @@ function Home() {
   return (
     <LinearGradient colors={['#ff0000', '#fff']} style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.title}>Pokédex</Text>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.hamburger}
+            onPress={() => navigation.openDrawer()}
+            accessibilityLabel="Open drawer menu"
+          >
+            <View style={styles.bar} />
+            <View style={styles.bar} />
+            <View style={styles.bar} />
+          </TouchableOpacity>
+          <Text style={styles.title}>Pokédex</Text>
+          {/* To make things even */}
+          <TouchableOpacity style={styles.hamburger}></TouchableOpacity>
+        </View>
         <FlatList
           data={data?.results}
           keyExtractor={item => item.name}
@@ -136,5 +153,26 @@ const styles = StyleSheet.create({
     // borderColor: 'red',
     // borderWidth: 4,
     textAlign: 'left',
+  },
+  header: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: '100%',
+    borderColor: 'blue',
+    borderWidth: 4,
+  },
+  hamburger: {
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bar: {
+    width: 24,
+    height: 3,
+    backgroundColor: 'black',
+    marginVertical: 2,
+    borderRadius: 2,
   },
 });
