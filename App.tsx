@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Home from './pages/home';
+import TestScene from './pages/camera/testScene';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -12,6 +13,7 @@ function DrawerScreens() {
   return (
     <Drawer.Navigator screenOptions={{ headerShown: false }}>
       <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="AR Camera" component={TestScene} />
     </Drawer.Navigator>
   );
 }
